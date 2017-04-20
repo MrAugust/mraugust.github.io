@@ -6,14 +6,21 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="https://mraugust.github.io">
-  <title>Archives: 2017 | 王远的博客</title>
+  <title>aidl_issues | 王远的博客</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="王远的博客">
-<meta property="og:url" content="https://mraugust.github.io/archives/2017/index.html">
+  <meta name="description" content="前言记录aidl开发过程中遇到的问题。
+issue 0因为最近需要开发服务来进行IPC，以前并未做过开发，所以很多东西都是新接触，以下记录下我碰到的奇葩的问题及解决方法。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="aidl_issues">
+<meta property="og:url" content="https://mraugust.github.io/2017/04/20/aidl-issues/index.html">
 <meta property="og:site_name" content="王远的博客">
+<meta property="og:description" content="前言记录aidl开发过程中遇到的问题。
+issue 0因为最近需要开发服务来进行IPC，以前并未做过开发，所以很多东西都是新接触，以下记录下我碰到的奇葩的问题及解决方法。">
+<meta property="og:updated_time" content="2017-04-20T06:48:57.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="王远的博客">
+<meta name="twitter:title" content="aidl_issues">
+<meta name="twitter:description" content="前言记录aidl开发过程中遇到的问题。
+issue 0因为最近需要开发服务来进行IPC，以前并未做过开发，所以很多东西都是新接触，以下记录下我碰到的奇葩的问题及解决方法。">
   
     <link rel="alternative" href="/atom.xml" title="王远的博客" type="application/atom+xml">
   
@@ -137,36 +144,79 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-aidl-issues" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2017" class="archive-year">2017</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/04/20/aidl-issues/" class="archive-article-date">
-  	<time datetime="2017-04-19T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-20</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/20/aidl-issues/">aidl_issues</a>
+    <h1 class="article-title" itemprop="name">
+      aidl_issues
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2017/04/20/aidl-issues/" class="archive-article-date">
+  	<time datetime="2017-04-19T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-20</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>记录aidl开发过程中遇到的问题。</p>
+<h2 id="issue-0"><a href="#issue-0" class="headerlink" title="issue 0"></a>issue 0</h2><p>因为最近需要开发服务来进行IPC，以前并未做过开发，所以很多东西都是新接触，以下记录下我碰到的奇葩的问题及解决方法。</p>
+<a id="more"></a>
+<h2 id="issue-1"><a href="#issue-1" class="headerlink" title="issue 1"></a>issue 1</h2><h3 id="前提："><a href="#前提：" class="headerlink" title="前提："></a>前提：</h3><p>aidl文件是客户提供的，aidl的Project是Eclipse的。虽说电脑上有Eclipse和Android Studio，针对新项目，还是希望用Android Studio开发，然后就碰到了各种坑！</p>
+<h3 id="问题："><a href="#问题：" class="headerlink" title="问题："></a>问题：</h3><p>错误: 找不到符号</p>
+<p>符号: 类 BeeperStub</p>
+<p>位置: 程序包 com.**.beeper</p>
+<p>错误: 找不到符号</p>
+<p>符号: 类 BeeperStub</p>
+<p>位置: 类 UService</p>
+<h3 id="说明："><a href="#说明：" class="headerlink" title="说明："></a>说明：</h3><p>开发环境：Android Studio 2.3.1 / buildToolsVersion 25.0.2</p>
+<p>需要Beeper.aidl文件中的方法，便在com.xx.beeper下写了BeeperStub类，继承com.xx.beeper.Beeper类，Service中返回BeeperStub的实例。代码写好后（编写的时候，Android Studio并未报错，包都能正确导入），编译，报上面的错。</p>
+<h3 id="失败的解决方法："><a href="#失败的解决方法：" class="headerlink" title="失败的解决方法："></a>失败的解决方法：</h3><p>说明：下面的解决办法，在网上搜集，可能针对其他情况能解决问题，但并不适合我这里的情况。</p>
+<p>1、aidl的路径配置到module目录的gradle的android {}中</p>
+<pre><code>android {
+    compileSdkVersion 25
+    buildToolsVersion &quot;25.0.2&quot;
+    defaultConfig {
+        //...
+    }
+    sourceSets {
+        main {
+            manifest.srcFile &apos;src/main/AndroidManifest.xml&apos;
+            java.srcDirs = [&apos;src/main/java&apos;, &apos;src/main/aidl&apos;]
+            resources.srcDirs = [&apos;src/main/java&apos;, &apos;src/main/aidl&apos;]
+            aidl.srcDirs = [&apos;src/main/aidl&apos;]
+            res.srcDirs = [&apos;src/main/res&apos;]
+            assets.srcDirs = [&apos;src/main/assets&apos;]
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;
+        }
+    }
+}
+</code></pre><p>感觉将源文件都添加到gradle中，编译器应该就能找到，但<strong>编译仍旧报错</strong>。</p>
+<p>2、注释module目录下gradle中的buildTypes的release的配置，当然，我这里只有混淆的配置，所以并<strong>没有任何用处</strong>。</p>
+<p>3、将BeeperStub.java移到package的包路径下以及将Beeper.aidl移到package的包路径下，网上很多例程都是在package的路径下添加aidl文件及Java文件。<strong>编译仍旧报错</strong>。</p>
+<p>4、因为文件是从Eclipse下move到Android Studio中的，所以曾怀疑是不是文件编码格式不对导致。修改文件编码格式。<strong>编译仍旧报错</strong>。</p>
+<h3 id="正确的解决方法："><a href="#正确的解决方法：" class="headerlink" title="正确的解决方法："></a>正确的解决方法：</h3><p>在查找问题及解决方法的过程中，发现，从Github上下载的例程，在上面新建Beeper.aidl及BeeperStub.java，然后编译，程序是能够正确编译安装的。于是，我在自己工程中新建Beeper.aidl及BeeperStub.java，然后编译，问题解决了。</p>
+<p>用Beyond Compare对比之前的工程以及新建aidl的工程，发现，全部有差异的文件中，跟Beeper相关的就只有.idea文件夹下的workspace.xml文件，workspace是Android Studio自动生成的，所以可以得出结论：</p>
+<p><strong>aidl文件需要通过Android Studio新建，复制粘贴的aidl文件会因为在编译配置中没有添加导致编译出错</strong></p>
+<p>后面自己想想，网上大部分的例程都是作者自己新建的，所以并不会出现这种情况。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -178,95 +228,88 @@
 		</ul>
 	</div>
 
-          
+      
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="http://s.jiathis.com/qrcode.php?url=https://mraugust.github.io/2017/04/20/aidl-issues/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/04/11/jni-develop/" class="archive-article-date">
-  	<time datetime="2017-04-10T16:00:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-04-11</time>
-</a>
-        </div>
-    	 
+<nav id="article-nav">
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/04/11/jni-develop/">JNI开发</a>
-    </h1>
+  
+    <a href="/2017/04/11/jni-develop/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">JNI开发</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+
+
+
+
+  
+    <div class="duoshuo"></div>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">JNI</a>
-        		</li>
-      		
-		</ul>
-	</div>
 
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2017/03/08/hello-world/" class="archive-article-date">
-  	<time datetime="2017-03-08T06:45:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-03-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2017/03/08/hello-world/">Hello World</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">others</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
 
 
           </div>
@@ -289,8 +332,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: true,
