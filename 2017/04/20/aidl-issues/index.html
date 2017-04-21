@@ -16,7 +16,7 @@ issue 0因为最近需要开发服务来进行IPC，以前并未做过开发，�
 <meta property="og:site_name" content="王远的博客">
 <meta property="og:description" content="前言记录aidl开发过程中遇到的问题。
 issue 0因为最近需要开发服务来进行IPC，以前并未做过开发，所以很多东西都是新接触，以下记录下我碰到的奇葩的问题及解决方法。">
-<meta property="og:updated_time" content="2017-04-20T06:48:57.000Z">
+<meta property="og:updated_time" content="2017-04-21T01:39:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="aidl_issues">
 <meta name="twitter:description" content="前言记录aidl开发过程中遇到的问题。
@@ -209,6 +209,7 @@ issue 0因为最近需要开发服务来进行IPC，以前并未做过开发，�
 <p>用Beyond Compare对比之前的工程以及新建aidl的工程，发现，全部有差异的文件中，跟Beeper相关的就只有.idea文件夹下的workspace.xml文件，workspace是Android Studio自动生成的，所以可以得出结论：</p>
 <p><strong>aidl文件需要通过Android Studio新建，复制粘贴的aidl文件会因为在编译配置中没有添加导致编译出错</strong></p>
 <p>后面自己想想，网上大部分的例程都是作者自己新建的，所以并不会出现这种情况。</p>
+<p>4月21日 注：Java文件也需要新建而不是直接拷贝</p>
 
       
 
@@ -394,11 +395,11 @@ issue 0因为最近需要开发服务来进行IPC，以前并未做过开发，�
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">others</a>
+                <a href="javascript:void(0)" class="js-tag color5">aidl</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">aidl</a>
+                <a href="javascript:void(0)" class="js-tag color2">others</a>
               </li>
              
               <li class="article-tag-list-item">
